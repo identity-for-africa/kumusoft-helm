@@ -414,7 +414,7 @@ metrics:
     #       severity: error
     rules: []
 
-prereg:
+payment:
   apiHost: payment.sandbox.xyz.net
 istio:
   enabled: true

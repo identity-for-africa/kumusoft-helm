@@ -1,62 +1,58 @@
 {{/*
-Expand the name of the chart.
+Return the proper  image name
 */}}
-{{- define "payment-portal.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
+{{- define "payment-portal.image" -}}
+{{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
+{{- end -}}
 
 {{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
+Return the proper image name (for the init container volume-permissions image)
 */}}
-{{- define "payment-portal.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-{{- end }}
+{{- define "payment-portal.volumePermissions.image" -}}
+{{- include "common.images.image" ( dict "imageRoot" .Values.volumePermissions.image "global" .Values.global ) -}}
+{{- end -}}
 
 {{/*
-Create chart name and version as used by the chart label.
+Return the proper Docker Image Registry Secret Names
 */}}
-{{- define "payment-portal.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Common labels
-*/}}
-{{- define "payment-portal.labels" -}}
-helm.sh/chart: {{ include "payment-portal.chart" . }}
-{{ include "payment-portal.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
-
-{{/*
-Selector labels
-*/}}
-{{- define "payment-portal.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "payment-portal.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
+{{- define "payment-portal.imagePullSecrets" -}}
+{{- include "common.images.pullSecrets" (dict "images" (list .Values.image .Values.volumePermissions.image) "global" .Values.global) -}}
+{{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
 {{- define "payment-portal.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "payment-portal.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- if .Values.serviceAccount.create -}}
+    {{ default (printf "%s" (include "common.names.fullname" .)) .Values.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Compile all warnings into a single message.
+*/}}
+{{- define "payment-portal.validateValues" -}}
+{{- $messages := list -}}
+{{- $messages := append $messages (include "payment-portal.validateValues.foo" .) -}}
+{{- $messages := append $messages (include "payment-portal.validateValues.bar" .) -}}
+{{- $messages := without $messages "" -}}
+{{- $message := join "\n" $messages -}}
+
+{{- if $message -}}
+{{-   printf "\nVALUES VALIDATION:\n%s" $message -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return podAnnotations
+*/}}
+{{- define "payment-portal.podAnnotations" -}}
+{{- if .Values.podAnnotations }}
+{{ include "common.tplvalues.render" (dict "value" .Values.podAnnotations "context" $) }}
 {{- end }}
+{{- if and .Values.metrics.enabled .Values.metrics.podAnnotations }}
+{{ include "common.tplvalues.render" (dict "value" .Values.metrics.podAnnotations "context" $) }}
 {{- end }}
+{{- end -}}
