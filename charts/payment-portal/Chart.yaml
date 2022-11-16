@@ -1,6 +1,6 @@
 apiVersion: v2
 name: payment-portal
-description: A Helm chart for MOSIP Pre-registration UI 
+description: A Helm chart for MOSIP Payment  UI 
 type: application
 version: 12.0.1
 appVersion: ""
