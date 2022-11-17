@@ -1,0 +1,61 @@
+apiVersion: v1
+entries:
+  payment-gateway:
+  - apiVersion: v2
+    created: "2022-11-17T13:53:10.794617+03:00"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 1.x.x
+    description: A Helm chart for MOSIP Payment Istio Gateway
+    digest: f13c8cd6b824cc5f3d54c10316dfad40246de5a55883cf6a72233b9d9959e54e
+    home: https://identity-for-africa.io
+    keywords:
+    - kumusoft
+    - payment-gateway
+    - kernel
+    maintainers:
+    - email: info@identity-for-africa.io
+      name: KUMUSOFT
+    name: payment-gateway
+    type: application
+    urls:
+    - https://identity-for-africa.github.io/kumusoft-helm/payment-gateway-12.0.1.tgz
+    version: 12.0.1
+  payment-portal:
+  - apiVersion: v2
+    created: "2022-11-17T13:53:10.80363+03:00"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 1.x.x
+    description: A Helm chart for MOSIP Payment  UI
+    digest: 7f64af5061a6a19cb87f2fea3eca897187bea21a9290d5ccbe50c9d26b3cd03b
+    home: https://identity-for-africa.io
+    keywords:
+    - kumusoft
+    - payment-portal
+    - kernel
+    maintainers:
+    - email: info@identity-for-africa.io
+      name: KUMUSOFT
+    name: payment-portal
+    type: application
+    urls:
+    - https://identity-for-africa.github.io/kumusoft-helm/payment-portal-12.0.1.tgz
+    version: 12.0.1
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-11-17T13:53:10.795236+03:00"
+    description: A Helm chart for Kubernetes
+    digest: 5289dbcacbccaeaab47d9b24158c53629f3f73be1ab223764aa7023419ca3dd6
+    name: payment-portal
+    type: application
+    urls:
+    - https://identity-for-africa.github.io/kumusoft-helm/payment-portal-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-11-17T13:53:10.789138+03:00"
